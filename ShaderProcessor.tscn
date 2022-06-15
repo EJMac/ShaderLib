@@ -1,0 +1,261 @@
+[gd_scene load_steps=26 format=2]
+
+[ext_resource path="res://scripts/Blur.gd" type="Script" id=1]
+[ext_resource path="res://scripts/ChromaticAbberation.gd" type="Script" id=2]
+[ext_resource path="res://shaders/blur_shader.gdshader" type="Shader" id=3]
+[ext_resource path="res://scripts/ShaderProcessor.gd" type="Script" id=4]
+[ext_resource path="res://shaders/vignette_shader.gdshader" type="Shader" id=5]
+[ext_resource path="res://shaders/chromatic_abb_shader.gdshader" type="Shader" id=6]
+[ext_resource path="res://shaders/color_splash_shader.gdshader" type="Shader" id=7]
+[ext_resource path="res://shaders/retro_tv_shader.gdshader" type="Shader" id=8]
+[ext_resource path="res://shaders/photo_negative_shader.gdshader" type="Shader" id=9]
+[ext_resource path="res://shaders/adjustment_shader.gdshader" type="Shader" id=10]
+[ext_resource path="res://scripts/Adjustment.gd" type="Script" id=11]
+[ext_resource path="res://scripts/Vignette.gd" type="Script" id=12]
+[ext_resource path="res://scripts/ColorSplash.gd" type="Script" id=13]
+[ext_resource path="res://scripts/RetroTV.gd" type="Script" id=14]
+[ext_resource path="res://scripts/PhotoNegative.gd" type="Script" id=15]
+[ext_resource path="res://shaders/pixelizer_shader.gdshader" type="Shader" id=16]
+[ext_resource path="res://Pixelizer.gd" type="Script" id=17]
+
+[sub_resource type="ShaderMaterial" id=12]
+shader = ExtResource( 10 )
+shader_param/brightness = 1.231
+shader_param/contrast = 2.899
+shader_param/saturation = 0.0
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 3 )
+shader_param/blur_intensity = 0.0
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 6 )
+shader_param/bias = -68
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = ExtResource( 5 )
+shader_param/vignette_intensity = 0.518
+shader_param/vignette_opacity = 0.5
+shader_param/vignette_rgb = Color( 0, 0, 0, 1 )
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = ExtResource( 7 )
+shader_param/color = Color( 0.0901961, 0.2, 0.588235, 1 )
+shader_param/strength = 0.284
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = ExtResource( 9 )
+
+[sub_resource type="ShaderMaterial" id=11]
+shader = ExtResource( 8 )
+shader_param/scanline_count = 180.0
+shader_param/scanline_speed = 0.233
+
+[sub_resource type="ShaderMaterial" id=13]
+shader = ExtResource( 16 )
+shader_param/pixel_size = 15
+
+[node name="FullScreenPostProcessorishEffects" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 896.0
+margin_bottom = 417.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Adjustment" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AdjustmentBuffer" type="BackBufferCopy" parent="Adjustment"]
+copy_mode = 2
+rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="AdjustmentShaderMaterial" type="ColorRect" parent="Adjustment/AdjustmentBuffer"]
+visible = false
+material = SubResource( 12 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 896.0
+margin_bottom = 417.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Blur" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BlurBuffer" type="BackBufferCopy" parent="Blur"]
+copy_mode = 2
+rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="BlurShaderMaterial" type="ColorRect" parent="Blur/BlurBuffer"]
+visible = false
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 896.0
+margin_bottom = 417.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color( 0.6, 0.227451, 0.227451, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChromaticAbberation" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChromaticAbbBuffer" type="BackBufferCopy" parent="ChromaticAbberation"]
+copy_mode = 2
+rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="ChromaticAbberationShaderMaterial" type="ColorRect" parent="ChromaticAbberation/ChromaticAbbBuffer"]
+visible = false
+material = SubResource( 4 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 896.0
+margin_bottom = 417.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Vignette" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VignetteBuffer" type="BackBufferCopy" parent="Vignette"]
+copy_mode = 2
+rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="VignetteShaderMaterial" type="ColorRect" parent="Vignette/VignetteBuffer"]
+visible = false
+material = SubResource( 6 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 896.0
+margin_bottom = 417.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorSplash" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorSplashBuffer" type="BackBufferCopy" parent="ColorSplash"]
+copy_mode = 2
+rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="ColorSplashShaderMaterial" type="ColorRect" parent="ColorSplash/ColorSplashBuffer"]
+visible = false
+material = SubResource( 7 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 896.0
+margin_bottom = 417.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PhotoNegative" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PhotoNegativeBuffer" type="BackBufferCopy" parent="PhotoNegative"]
+copy_mode = 2
+rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="PhotoNegativeShaderMaterial" type="ColorRect" parent="PhotoNegative/PhotoNegativeBuffer"]
+visible = false
+material = SubResource( 9 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 896.0
+margin_bottom = 417.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RetroTV" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RetroTVBuffer" type="BackBufferCopy" parent="RetroTV"]
+copy_mode = 2
+rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="RetroTVShaderMaterial" type="ColorRect" parent="RetroTV/RetroTVBuffer"]
+visible = false
+material = SubResource( 11 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 896.0
+margin_bottom = 417.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Pixelizer" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -896.0
+margin_bottom = -417.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PixelizerBuffer" type="BackBufferCopy" parent="Pixelizer"]
+copy_mode = 2
+rect = Rect2( 0, 0, 1024, 600 )
+
+[node name="PixelizerShaderMaterial" type="ColorRect" parent="Pixelizer/PixelizerBuffer"]
+visible = false
+material = SubResource( 13 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
