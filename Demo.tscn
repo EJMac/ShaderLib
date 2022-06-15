@@ -3,25 +3,38 @@
 [ext_resource path="res://ShaderProcessor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://reesetube.png" type="Texture" id=2]
 
-[node name="Demo" type="Node2D"]
+[node name="SecurityCameraEffectExample" type="Node2D"]
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 0.501333, 0.5 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 752, 0 )
+scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 2 )
 centered = false
 
 [node name="FullScreenPostProcessorEffects" parent="." instance=ExtResource( 1 )]
+margin_left = 752.0
 margin_right = 1504.0
-margin_bottom = 2000.0
-adjustment_brightness = 1.231
-adjustment_contrast = 2.899
-adjustment_saturation = 0.0
-chromatic_abberation_bias = -68
+margin_bottom = 1000.0
+adjustment_show = true
+adjustment_brightness = 1.391
+adjustment_contrast = 3.0
+adjustment_saturation = 3.0
+blur_show = true
+blur_intensity = 0.947
+chromatic_abberation_show = true
+chromatic_abberation_bias = 3
 vignette_show = true
-vignette_intensity = 0.518
+vignette_intensity = 0.758
+vignette_opacity = 0.115
 color_splash_show = true
 splash_rgb = Color( 0.0901961, 0.2, 0.588235, 1 )
 splash_strength = 0.284
 retro_tv_show = true
 retro_tv_scanline_speed = 0.233
-pixel_size = 15
+pixel_show = true
+pixel_size = 4
